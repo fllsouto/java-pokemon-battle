@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="java-pokemon-battle:ear exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/java_pokemon_battle_ear_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="java-pokemon-battle/javaeeApplication/javaEEApplication" />
+    </root>
+  </artifact>
+</component>
