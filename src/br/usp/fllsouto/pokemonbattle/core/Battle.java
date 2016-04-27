@@ -11,8 +11,8 @@ public class Battle {
 
     public static void run() {
         System.out.println("Let's Battle!");
-        Trainer ash = new Trainer();
-        ash.foo();
+//        Trainer ash = new Trainer();
+//        ash.foo();
     }
 
     public static boolean isTrue() {
