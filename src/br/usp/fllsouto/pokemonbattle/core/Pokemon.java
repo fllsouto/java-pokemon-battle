@@ -44,10 +44,9 @@ public class Pokemon {
     }
 
     public Attack getRandomAttack() {
-        String[] attackList = (String[]) pokemonAttacks.keySet().toArray();
-        int indx = new Random().nextInt(attackList.length);
-        String randomAttack = attackList[indx];
-        return this.getAttack(randomAttack);
+        List<String> attackList = new ArrayList(this.pokemonAttacks.keySet());
+        int indx = new Random().nextInt(attackList.size());
+        return this.getAttack(attackList.get(indx));
     }
 
     public Boolean isDead() {
@@ -67,5 +66,9 @@ public class Pokemon {
         this.hp += value;
         if (this.hp > this.maxHP)
             this.hp = this.maxHP;
+    }
+
+    public String getLifeInfo() {
+        return String.format("\n%s\n HP: %f/%f", this.getName(), this.getMaxHp(), this.getHp());
     }
 }

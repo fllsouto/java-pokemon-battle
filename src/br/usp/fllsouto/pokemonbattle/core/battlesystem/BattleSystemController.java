@@ -45,11 +45,23 @@ public class BattleSystemController extends EventController {
             int alivePokemonTrainerA = BattleSystemController.this.trainerA.getAlivePokemonQuantity();
             int alivePokemonTrainerB = BattleSystemController.this.trainerB.getAlivePokemonQuantity();
 
-            if (alivePokemonTrainerA == alivePokemonTrainerB && alivePokemonTrainerA == 0) {
+            if (alivePokemonTrainerA == alivePokemonTrainerB) {
+
+                if (alivePokemonTrainerA != 0)
+                    return;
+
                 description = "DRAW!\nAll pokemons from " + BattleSystemController.this.trainerA.getName() + " and " + BattleSystemController.this.trainerB.getName() + " are defeated!";
-            } else if (alivePokemonTrainerA > alivePokemonTrainerB ) {
+            } else if (alivePokemonTrainerA > alivePokemonTrainerB) {
+
+                if (alivePokemonTrainerB != 0)
+                    return;
+
                 description = "TRAINER " + BattleSystemController.this.trainerA.getName() + " WIN!\nAll pokemons from " + BattleSystemController.this.trainerB.getName() + " was defeated!";
             } else {
+
+                if (alivePokemonTrainerA != 0)
+                    return;
+
                 description = "TRAINER " + BattleSystemController.this.trainerB.getName() + " WIN!\nAll pokemons from " + BattleSystemController.this.trainerA.getName() + " was defeated!";
             }
             endGame = true;
@@ -63,32 +75,28 @@ public class BattleSystemController extends EventController {
     }
     private class ChangeMainPokemon extends Event {
         private static final int priority = 4;
-        Trainer from;
-        String pokemonName;
+        private Trainer from;
+        private String description;
+        private Pokemon changedPokemon;
 
         public ChangeMainPokemon(long eventTime, Trainer from) {
             super(eventTime);
             this.from = from;
-            this.pokemonName = null;
-        }
-
-        public ChangeMainPokemon(long eventTime, Trainer from, String pokemonName) {
-            super(eventTime);
-            this.from = from;
-            this.pokemonName = pokemonName;
         }
 
         public void action() {
-
+            changedPokemon = this.from.getMainPokemon();
+            this.description = "Trainer " + this.from.getName() + " are changing your main pokemon " + changedPokemon.getName();
+            if(!this.from.changePokemon()) {
+                this.description += "\nTrainer " + this.from.getName() + " doesn't have anymore pokemons!";
+                addEvent(new EndBattle(System.currentTimeMillis() + 10));
+            } else {
+                this.description += " by " + this.from.getMainPokemon().getName();
+            }
         }
 
         public String description() {
-            if (this.pokemonName == null) {
-                return ("Trainer" + this.from.getName() + " are changing your main pokemon " + this.from.getMainPokemon().getName() + " for another one.");
-            } else {
-                return ("Trainer" + this.from.getName() + " are changing your main pokemon " + this.from.getMainPokemon().getName() + " for " + this.pokemonName);
-
-            }
+            return this.description;
         }
     }
 
@@ -125,7 +133,7 @@ public class BattleSystemController extends EventController {
         private Trainer from;
         private Trainer to;
         private Attack attack;
-
+        private String description = "";
         public PokemonAttacks(long eventTime, Trainer from, Trainer to) {
             super(eventTime);
             this.from = from;
@@ -133,12 +141,30 @@ public class BattleSystemController extends EventController {
         }
 
         public void action() {
+            this.description = "\n------------------------------------------------------------------";
+            this.description += "\nTrainer  " + this.from.getName() + " attacks " + this.to.getName();
+
             attack = this.from.getMainPokemon().getRandomAttack();
+
+            this.description += "\n" + this.from.getMainPokemon().getName() + " attacked " + this.to.getMainPokemon().getName() + " with " + attack.getName();
+            this.description += "\n\nBefore:" + this.to.getMainPokemon().getLifeInfo();
+
             this.to.getMainPokemon().takeDamage(attack);
+
+            this.description += "\n\nAfter:" + this.to.getMainPokemon().getLifeInfo();
+
+            if (this.to.getMainPokemon().isDead()) {
+                this.description += "\n\n" + this.to.getMainPokemon().getName() + " is dead!";
+                addEvent(new ChangeMainPokemon(System.currentTimeMillis(), this.to));
+            }
+
+            this.description += "\n------------------------------------------------------------------";
+
         }
 
         public String description() {
-            return ("Trainer " + this.from.getName() + " with pokemon " + this.from.getMainPokemon().getName() + " attacked " + this.to.getMainPokemon().getName() + " Trainer's " + this.to.getName() + " pokemon with " + attack.getName());
+
+            return this.description;
         }
     }
 
@@ -162,7 +188,7 @@ public class BattleSystemController extends EventController {
         }
 
         public String description() {
-            return "Restarting the Battle";
+            return "New Battle Turn...";
         }
 
     }

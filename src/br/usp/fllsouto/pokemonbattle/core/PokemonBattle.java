@@ -1,19 +1,20 @@
 package br.usp.fllsouto.pokemonbattle.core;
 
-import br.usp.fllsouto.pokemonbattle.core.battlesystem.BattleSystemController;
+
+import br.usp.fllsouto.pokemonbattle.core.battlesystem.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PokemonBattle {
     public static void main(String args[]) {
-        System.out.println("Starting Pokemon PokemonBattle");
+        System.out.println("Starting Pokemon Battle");
         PokemonBattle.run();
-        System.out.println("Ending Pokemon PokemonBattle");
+        System.out.println("Ending Pokemon Battle");
     }
 
     public static void run() {
-        System.out.println("Let's PokemonBattle!");
+        System.out.println("Let's Battle!");
 
         Trainer red = getRed();
         Trainer blue = getBlue();
