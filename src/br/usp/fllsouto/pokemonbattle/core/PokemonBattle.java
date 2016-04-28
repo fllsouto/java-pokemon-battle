@@ -1,16 +1,14 @@
 package br.usp.fllsouto.pokemonbattle.core;
 
-import br.usp.fllsouto.pokemonbattle.core.Trainer;
-
-public class Battle {
+public class PokemonBattle {
     public static void main(String args[]) {
-        System.out.println("Starting Pokemon Battle");
-        Battle.run();
-        System.out.println("Ending Pokemon Battle");
+        System.out.println("Starting Pokemon PokemonBattle");
+        PokemonBattle.run();
+        System.out.println("Ending Pokemon PokemonBattle");
     }
 
     public static void run() {
-        System.out.println("Let's Battle!");
+        System.out.println("Let's PokemonBattle!");
 //        Trainer ash = new Trainer();
 //        ash.foo();
     }

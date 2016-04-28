@@ -10,12 +10,14 @@ import java.util.Map;
  */
 public class Pokemon {
     private String name;
+    private Double maxHP;
     private Double hp;
     private HashMap<String, Attack> pokemonAttacks = new HashMap();
 
-    public Pokemon(String name, double hp, HashMap<String, Double> attacks) {
+    public Pokemon(String name, double maxHP, HashMap<String, Double> attacks) {
         this.name = name;
-        this.hp = hp;
+        this.maxHP = maxHP;
+        this.hp = maxHP;
         Iterator it = attacks.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
@@ -38,5 +40,18 @@ public class Pokemon {
             System.out.println("Available attacks : " + this.pokemonAttacks.keySet().toString());
         }
         return attack;
+    }
+
+    public Boolean isDead() {
+        return (this.hp <= 0);
+    }
+
+    public Boolean takeDamage(Double damage) {
+        if (this.isDead()) {
+            return false;
+        } else {
+            this.hp -= damage;
+            return true;
+        }
     }
 }
