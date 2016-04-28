@@ -1,9 +1,6 @@
 package br.usp.fllsouto.pokemonbattle.core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by fsouto on 27/04/16.
@@ -33,6 +30,10 @@ public class Pokemon {
         return this.hp;
     }
 
+    public Double getMaxHp() {
+        return this.maxHP;
+    }
+
     public Attack getAttack(String name) {
         Attack attack = this.pokemonAttacks.get(name);
         if (attack == null) {
@@ -42,16 +43,29 @@ public class Pokemon {
         return attack;
     }
 
+    public Attack getRandomAttack() {
+        String[] attackList = (String[]) pokemonAttacks.keySet().toArray();
+        int indx = new Random().nextInt(attackList.length);
+        String randomAttack = attackList[indx];
+        return this.getAttack(randomAttack);
+    }
+
     public Boolean isDead() {
         return (this.hp <= 0);
     }
 
-    public Boolean takeDamage(Double damage) {
+    public Boolean takeDamage(Attack attack) {
         if (this.isDead()) {
             return false;
         } else {
-            this.hp -= damage;
+            this.updateHp(-attack.getDamage());
             return true;
         }
+    }
+
+    public void updateHp(Double value) {
+        this.hp += value;
+        if (this.hp > this.maxHP)
+            this.hp = this.maxHP;
     }
 }

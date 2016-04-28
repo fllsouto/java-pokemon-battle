@@ -10,7 +10,7 @@ public class Inventory {
     private ArrayList<Potion> potionBag = new ArrayList();
 
     public boolean addItem(String item) {
-        Potion newItem = new Potion(item, Potion.getValue(item));
+        Potion newItem = new Potion(item);
         if (newItem != null) {
             potionBag.add(newItem);
             return true;

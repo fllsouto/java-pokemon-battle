@@ -12,13 +12,19 @@ public class Potion extends Item {
         potionList = new HashMap<String, Double>();
         potionList.put("Potion", 30.0);
     }
-    public Potion(String name, Double value) {
+    public Potion(String name) {
         this.name = name;
-        this.value = value;
+        this.value = Potion.getValue(name);
     }
+
     @Override
     public Double use() {
-        return value;
+        return this.value;
+    }
+
+    public Double use(Pokemon pokemon) {
+        pokemon.updateHp(this.value);
+        return use();
     }
 
     public static Double getValue(String key) {

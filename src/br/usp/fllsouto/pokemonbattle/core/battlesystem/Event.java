@@ -6,7 +6,7 @@ package br.usp.fllsouto.pokemonbattle.core.battlesystem;
 abstract public class Event {
     private long evtTime;
 
-    private Event(long eventTime){
+    public Event(long eventTime){
         this.evtTime = eventTime;
     }
 

@@ -1,5 +1,7 @@
 package br.usp.fllsouto.pokemonbattle.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Trainer {
@@ -8,10 +10,12 @@ public class Trainer {
     private Inventory inventory = new Inventory();
     private Pokemon mainPokemon;
 
-    public Trainer(String name, HashMap<String, Pokemon> pokemonList) {
+    public Trainer(String name, HashMap<String, Pokemon> pokemonList, ArrayList<String> inventoryList) {
         this.name = name;
         this.pokebolas = pokemonList;
-        this.inventory.addItem("Potion");
+
+        for (String item : inventoryList)
+            this.inventory.addItem(item);
     }
 
     public Pokemon getPokemon(String name) {
@@ -29,7 +33,28 @@ public class Trainer {
     }
 
     public Pokemon getMainPokemon() {
+
         return this.mainPokemon;
     }
-    
+
+    public String  getName() {
+        return this.name;
+    }
+
+    public int getAlivePokemonQuantity() {
+        Collection<Pokemon> pokemonCollection = this.pokebolas.values();
+        int alivePokemons = 0;
+        for (Pokemon pokemon : pokemonCollection) {
+            if (!pokemon.isDead()) {
+                alivePokemons += 1;
+            }
+        }
+
+        return alivePokemons;
+    }
+
+
+    public Item getItemFromInventory(String itemName) {
+        return this.inventory.getItem(itemName);
+    }
 }
